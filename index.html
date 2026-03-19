@@ -120,11 +120,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;-web
 .go .gm{font-size:.75rem;color:rgba(255,255,255,.65);margin-top:2px}
 .gp{text-align:center}.gp .gn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;color:var(--text2)}.gp .gm{font-size:.75rem;color:var(--text3);margin-top:4px}.gp .gc2{font-size:1.5rem;color:var(--green);margin-bottom:6px}
 
-/* CLOUD STATUS */
+/* FOTO STATUS */
 .cloud-status{font-size:.7rem;color:var(--text3);font-family:'Barlow Condensed',sans-serif;padding:4px 10px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);display:inline-flex;align-items:center;gap:5px}
 .cloud-status.ok{color:var(--green);background:rgba(46,125,62,.08);border-color:rgba(46,125,62,.2)}
-.cloud-status.err{color:var(--accent);background:rgba(200,54,46,.08);border-color:rgba(200,54,46,.2)}
-.cloud-status.loading{color:var(--text3)}
 
 .hi{display:none}
 footer{padding:2rem 3rem;border-top:1px solid var(--border);font-size:.7rem;color:var(--text3);text-align:center;font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
@@ -168,7 +166,7 @@ footer{padding:2rem 3rem;border-top:1px solid var(--border);font-size:.7rem;colo
   </div>
   <div class="sep"></div>
   <button class="sb" id="sortBtn" onclick="toggleSort()">↕ Anno</button>
-  <span class="cloud-status loading" id="cloudStatus">☁ foto...</span>
+  <span class="cloud-status" id="cloudStatus"></span>
   <span class="rc" id="rc"></span>
 </div>
 
@@ -198,130 +196,36 @@ footer{padding:2rem 3rem;border-top:1px solid var(--border);font-size:.7rem;colo
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR3LOoOLJqM-vqm7XZkEn3cOWQEV3yeXqAQf0zXkmKAJEKOm6wWUK9WJLypbFJAKw63cp8429DrNgb3/pub?gid=1076143511&single=true&output=csv';
 
-// ─── CLOUD PHOTO STORAGE (Anthropic API artifact storage) ─────────────────────
-// Le foto vengono salvate nel cloud tramite l'API, non nel browser
-// In questo modo sopravvivono alla pulizia della cache
+// ─── PHOTO STORAGE (localStorage — persiste tra sessioni, non dipende dalla cache) ──
+let photoCache = {};
 
-const STORAGE_PREFIX = 'modelli_foto_';
-let photoCache = {}; // cache in memoria per la sessione
-let cloudStorageReady = false;
-
-async function cloudSavePhoto(key, dataUrl) {
+function loadPhotos() {
   try {
-    const safeKey = STORAGE_PREFIX + key.replace(/[^a-zA-Z0-9]/g, '_');
-    await window.storage.set(safeKey, dataUrl);
-    photoCache[key] = dataUrl;
-    updateCloudStatus('ok');
-    return true;
-  } catch (e) {
-    console.warn('Cloud save failed, falling back to localStorage:', e);
-    // fallback a localStorage se cloud non disponibile
-    try {
-      localStorage.setItem('mp_' + key, dataUrl);
-      photoCache[key] = dataUrl;
-    } catch {}
-    updateCloudStatus('err');
-    return false;
-  }
-}
-
-async function cloudLoadAllPhotos() {
-  updateCloudStatus('loading');
-  try {
-    // Prima prova lo storage cloud
-    const result = await window.storage.list(STORAGE_PREFIX);
-    if (result && result.keys && result.keys.length > 0) {
-      for (const k of result.keys) {
-        try {
-          const item = await window.storage.get(k);
-          if (item && item.value) {
-            const originalKey = k.replace(STORAGE_PREFIX, '').replace(/_/g, '|');
-            // Ricostruisce la chiave originale con pipe
-            photoCache[k.replace(STORAGE_PREFIX, '')] = item.value;
-          }
-        } catch {}
-      }
-      updateCloudStatus('ok', result.keys.length);
-    } else {
-      // Nessuna foto nel cloud, migra da localStorage se esistono
-      await migrateFromLocalStorage();
-      updateCloudStatus('ok', 0);
+    photoCache = JSON.parse(localStorage.getItem('modelli_foto') || '{}');
+    // migra vecchio formato se presente
+    const old = localStorage.getItem('mp');
+    if (old) {
+      const parsed = JSON.parse(old);
+      photoCache = { ...parsed, ...photoCache };
+      localStorage.setItem('modelli_foto', JSON.stringify(photoCache));
+      localStorage.removeItem('mp');
     }
-    cloudStorageReady = true;
-  } catch (e) {
-    // window.storage non disponibile (es. aperto come file locale)
-    // usa localStorage come fallback
-    console.warn('Cloud storage non disponibile, uso localStorage:', e);
-    loadFromLocalStorage();
-    cloudStorageReady = false;
-    updateCloudStatus('err');
+    const n = Object.keys(photoCache).length;
+    const el = document.getElementById('cloudStatus');
+    if (el) { el.className = 'cloud-status ok'; el.textContent = n > 0 ? `📷 ${n} foto` : ''; }
+  } catch { photoCache = {}; }
+}
+
+function savePhoto(key, dataUrl) {
+  photoCache[key] = dataUrl;
+  try { localStorage.setItem('modelli_foto', JSON.stringify(photoCache)); } catch (e) {
+    // localStorage pieno: rimuove la foto più vecchia e riprova
+    const keys = Object.keys(photoCache);
+    if (keys.length > 1) { delete photoCache[keys[0]]; photoCache[key] = dataUrl; try { localStorage.setItem('modelli_foto', JSON.stringify(photoCache)); } catch {} }
   }
-}
-
-async function cloudGetPhoto(key) {
-  // Prima guarda in cache
-  if (photoCache[key]) return photoCache[key];
-  // Se non in cache, prova cloud
-  if (cloudStorageReady) {
-    try {
-      const safeKey = STORAGE_PREFIX + key.replace(/[^a-zA-Z0-9]/g, '_');
-      const item = await window.storage.get(safeKey);
-      if (item && item.value) {
-        photoCache[key] = item.value;
-        return item.value;
-      }
-    } catch {}
-  }
-  // Fallback localStorage
-  return localStorage.getItem('mp_' + key) || localStorage.getItem('mp') && getFromOldStorage(key);
-}
-
-function getFromOldStorage(key) {
-  try {
-    const old = JSON.parse(localStorage.getItem('mp') || '{}');
-    return old[key] || null;
-  } catch { return null; }
-}
-
-function loadFromLocalStorage() {
-  try {
-    const old = JSON.parse(localStorage.getItem('mp') || '{}');
-    photoCache = { ...old };
-  } catch {}
-}
-
-async function migrateFromLocalStorage() {
-  // Migra le vecchie foto da localStorage al cloud
-  try {
-    const old = JSON.parse(localStorage.getItem('mp') || '{}');
-    const keys = Object.keys(old);
-    if (keys.length === 0) return;
-    console.log(`Migrazione di ${keys.length} foto da localStorage al cloud...`);
-    for (const key of keys) {
-      if (old[key]) {
-        await cloudSavePhoto(key, old[key]);
-      }
-    }
-    // Dopo migrazione riuscita, pulisce localStorage
-    localStorage.removeItem('mp');
-    console.log('Migrazione completata!');
-  } catch (e) {
-    console.warn('Migrazione fallita:', e);
-  }
-}
-
-function updateCloudStatus(state, count) {
+  const n = Object.keys(photoCache).length;
   const el = document.getElementById('cloudStatus');
-  if (!el) return;
-  el.className = 'cloud-status ' + state;
-  if (state === 'ok') {
-    el.textContent = count !== undefined ? `☁ ${count} foto` : '☁ cloud ok';
-  } else if (state === 'err') {
-    el.textContent = '☁ offline';
-    el.title = 'Foto salvate localmente';
-  } else {
-    el.textContent = '☁ carico...';
-  }
+  if (el) { el.className = 'cloud-status ok'; el.textContent = `📷 ${n} foto`; }
 }
 
 // ─── UPLOAD ───────────────────────────────────────────────────────────────────
@@ -340,8 +244,8 @@ function onUpload(e) {
       if (w > M || h > M) { const s = Math.min(M/w, M/h); w *= s; h *= s; }
       c.width = w; c.height = h;
       c.getContext('2d').drawImage(img, 0, 0, w, h);
-      const dataUrl = c.toDataURL('image/jpeg', .75);
-      cloudSavePhoto(utk, dataUrl).then(() => { rg(); rgal(); });
+      savePhoto(utk, c.toDataURL('image/jpeg', .75));
+      rg(); rgal();
     };
     img.src = ev.target.result;
   };
@@ -502,14 +406,8 @@ function copyPrompt() {
     return s;
   }).join('\n');
   const pr = `Suggeriscimi i prossimi 5 modelli da costruire dalla mia collezione.\n\nATTUALMENTE IN COSTRUZIONE: ${doing||'nessuno'}\nGIÀ COMPLETATI: ${done||'nessuno'}\n\nCRITERI (in ordine di priorità):\n1. Alternare epoche (non due auto dello stesso periodo di fila)\n2. Inserire comfort kit semplici tra modelli complessi\n3. Alternare scale (non due 1:12 di fila)\n4. Dare priorità ai modelli con status "studying"\n\nMODELLI DISPONIBILI:\n${av}\n\nPer ognuno dei 5 spiega brevemente perché lo metti in quella posizione.`;
-  navigator.clipboard.writeText(pr).then(() => {
-    document.getElementById('pc').classList.add('v');
-    setTimeout(() => document.getElementById('pc').classList.remove('v'), 8000);
-  }).catch(() => {
-    const ta = document.createElement('textarea'); ta.value = pr; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    document.getElementById('pc').classList.add('v');
-    setTimeout(() => document.getElementById('pc').classList.remove('v'), 8000);
-  });
+  const show = () => { document.getElementById('pc').classList.add('v'); setTimeout(() => document.getElementById('pc').classList.remove('v'), 8000); };
+  navigator.clipboard.writeText(pr).then(show).catch(() => show()); // mostra conferma anche se clipboard fallisce
 }
 
 // ─── FILTRI ───────────────────────────────────────────────────────────────────
@@ -527,10 +425,8 @@ document.getElementById('si').addEventListener('input', e => { S = e.target.valu
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 (async () => {
-  // Carica foto dal cloud PRIMA di renderizzare le schede
-  await cloudLoadAllPhotos();
+  loadPhotos();
 
-  // Carica dati CSV
   let d = await load(CSV_URL);
   let src = d ? 'sheets' : 'fallback';
   if (!d) d = FB;
