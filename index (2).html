@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collezione Modelli — Inventario & Piano di Montaggio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--bg2:#141418;--bg3:#1c1c22;--text:#e8e6e1;--text2:#9a978f;--text3:#5c5a54;--accent:#c8362e;--accent2:#e8a830;--green:#4a9e5c;--blue:#4a7ec8;--purple:#8a6ec8;--pink:#c86a8a;--border:rgba(255,255,255,0.06);--r:6px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased}
+.hero{position:relative;min-height:55vh;display:flex;flex-direction:column;justify-content:flex-end;padding:4rem 3rem 3rem;background:linear-gradient(165deg,#1a0a08,#0c0c0e 40%,#0a0e14)}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.015) 79px,rgba(255,255,255,.015) 80px),repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.015) 79px,rgba(255,255,255,.015) 80px);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(3rem,8vw,6rem);line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
+.hero h1 span{color:var(--accent)}
+.hero-sub{font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:1.3rem;color:var(--text2);margin-top:1rem;letter-spacing:.15em;text-transform:uppercase}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;flex-wrap:wrap}
+.hs-n{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:2.5rem;line-height:1}
+.hs-l{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.toolbar{position:sticky;top:0;z-index:100;background:rgba(12,12,14,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 3rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.si{padding:6px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:.85rem;font-family:'Barlow',sans-serif;width:200px}
+.si:focus{outline:none;border-color:var(--accent)}
+.fg{display:flex;gap:2px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.fb{padding:6px 12px;font-size:.72rem;font-family:'Barlow Condensed',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);background:0 0;border:none;cursor:pointer;transition:.15s;white-space:nowrap}
+.fb:hover{color:var(--text2)}.fb.a{color:var(--text);background:rgba(255,255,255,.08)}
+.sep{width:1px;height:24px;background:var(--border);margin:0 6px}
+.sb{padding:6px 12px;font-size:.72rem;font-family:'Barlow Condensed',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);background:var(--bg3);border:none;border-radius:4px;cursor:pointer}
+.rc{margin-left:auto;font-size:.75rem;color:var(--text3);font-family:'Barlow Condensed',sans-serif}
+.gc{padding:2rem 3rem 4rem}
+.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.2s;cursor:pointer}
+.card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px)}
+.cv{width:100%;height:140px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cv .cn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.3rem;color:rgba(255,255,255,.13);text-transform:uppercase;letter-spacing:.05em;text-align:center;padding:0 12px;line-height:1.1}
+.cv .cs{position:absolute;bottom:8px;right:10px;font-family:'DM Serif Display',serif;font-size:.85rem;color:rgba(255,255,255,.18)}
+.cv .ca{position:absolute;top:8px;right:10px;font-family:'DM Serif Display',serif;font-size:2rem;color:rgba(255,255,255,.06)}
+.cv img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.cv .cu,.cv .cl{position:absolute;bottom:6px;padding:3px 8px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);border-radius:3px;font-size:.6rem;color:rgba(255,255,255,.5);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;opacity:0;transition:.2s;text-decoration:none}
+.cu{left:6px}.cl{right:6px}
+.card:hover .cu,.card:hover .cl{opacity:1}
+.badge{position:absolute;top:8px;left:8px;padding:3px 10px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;z-index:2}
+.b-done{background:rgba(74,158,92,.85);color:#fff}
+.b-wip{background:rgba(232,168,48,.9);color:#1a1400}
+.b-studying{background:rgba(138,110,200,.85);color:#fff}
+.b-collecting{background:rgba(200,106,138,.8);color:#fff}
+.b-onhold{background:rgba(255,255,255,.1);color:var(--text3)}
+.b-todo{background:rgba(74,126,200,.2);color:var(--blue);border:1px solid rgba(74,126,200,.3)}
+.cb{padding:12px 14px}
+.cb .nm{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;line-height:1.2}
+.cb .yr{font-family:'DM Serif Display',serif;font-size:.8rem;color:var(--accent);margin-top:2px}
+.cb .mt{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pill{font-size:.65rem;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:var(--text2);font-family:'Barlow Condensed',sans-serif}
+.mood{font-size:.75rem;color:var(--text3);margin-top:8px;line-height:1.5;font-style:italic;max-height:0;overflow:hidden;transition:.3s}
+.card.exp .mood{max-height:200px}
+.tf1{background:linear-gradient(135deg,#2a1012,#1a0a0c)}.ten{background:linear-gradient(135deg,#0a1a2a,#0c1018)}.tra{background:linear-gradient(135deg,#1a2a0a,#101810)}.tca{background:linear-gradient(135deg,#2a1a0a,#181210)}.tna{background:linear-gradient(135deg,#2a0a2a,#180c18)}.tot{background:linear-gradient(135deg,#1a1a1a,#121212)}
+.sec{padding:3rem;border-top:1px solid var(--border)}
+.st{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5rem}
+.st span{color:var(--accent)}
+.tl{position:relative;padding-left:40px}
+.tl::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--purple),var(--blue))}
+.ti{position:relative;margin-bottom:2rem;padding-left:20px}
+.td{position:absolute;left:-32px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid}
+.td.w{border-color:var(--accent2);background:var(--accent2)}.td.s{border-color:var(--purple);background:var(--purple)}.td.p{border-color:var(--purple);background:transparent}
+.pb{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#a02820);color:#fff;border:none;border-radius:var(--r);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:.2s}
+.pb:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.pc{display:none;margin-top:1rem;padding:14px 18px;background:rgba(74,158,92,.1);border:1px solid rgba(74,158,92,.3);border-radius:var(--r);font-size:.85rem;color:var(--green);line-height:1.6}
+.pc.v{display:block}
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:4px}
+.gi{position:relative;overflow:hidden;aspect-ratio:16/10;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.gi img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.gi .go{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px;transition:.3s}
+.go .gn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1.1rem;color:#fff}
+.go .gm{font-size:.75rem;color:rgba(255,255,255,.6);margin-top:2px}
+.gp{text-align:center}.gp .gn{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1rem;color:var(--text2)}.gp .gm{font-size:.75rem;color:var(--text3);margin-top:4px}.gp .gc2{font-size:1.5rem;color:var(--green);margin-bottom:6px}
+.hi{display:none}
+footer{padding:2rem 3rem;border-top:1px solid var(--border);font-size:.7rem;color:var(--text3);text-align:center;font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:768px){.hero{padding:3rem 1.5rem 2rem;min-height:45vh}.toolbar{padding:.6rem 1rem}.gc{padding:1rem}.gr{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}.sec{padding:2rem 1rem}.si{width:140px}}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.card{animation:fu .4s ease both}
+</style>
+</head>
+<body>
+<section class="hero"><div class="hero-content"><h1>La <span>Collezione</span></h1><p class="hero-sub">Inventario modelli &bull; Piano di montaggio</p><div class="hero-stats" id="hs"></div></div></section>
+<div class="toolbar">
+<input type="text" class="si" placeholder="Cerca modello..." id="si">
+<div class="fg" data-f="status"><button class="fb a" data-v="all">Tutti</button><button class="fb" data-v="done">Done</button><button class="fb" data-v="wip">Doing</button><button class="fb" data-v="studying">Studying</button><button class="fb" data-v="collecting">Collecting</button><button class="fb" data-v="onhold">On hold</button><button class="fb" data-v="todo">To do</button></div>
+<div class="sep"></div>
+<div class="fg" data-f="tipo"><button class="fb a" data-v="all">Tutti</button><button class="fb" data-v="Formula 1">F1</button><button class="fb" data-v="Endurance">Endurance</button><button class="fb" data-v="other">Altri</button></div>
+<div class="sep"></div>
+<div class="fg" data-f="scala"><button class="fb a" data-v="all">Tutte</button><button class="fb" data-v="1:12">1:12</button><button class="fb" data-v="1:20">1:20</button><button class="fb" data-v="1:24">1:24</button></div>
+<div class="sep"></div>
+<button class="sb" id="sortBtn" onclick="toggleSort()">↕ Anno</button>
+<span class="rc" id="rc"></span>
+</div>
+<div class="gc"><div class="gr" id="grid"></div></div>
+<input type="file" accept="image/*" class="hi" id="fi" onchange="onUpload(event)">
+<section class="sec" id="tlSec"><h2 class="st">Piano di <span>montaggio</span></h2><div class="tl" id="tl"></div></section>
+<section class="sec"><h2 class="st">Pianifica i <span>prossimi 5</span></h2><p style="font-size:.85rem;color:var(--text3);margin-bottom:1.5rem">Copia il prompt con i dati aggiornati e incollalo nella chat con Claude su claude.ai per ricevere i suggerimenti AI.</p><button class="pb" onclick="copyPrompt()">&#9670; Copia prompt per Claude</button><div class="pc" id="pc">Prompt copiato! Vai su <strong>claude.ai</strong> e incollalo nella chat.</div></section>
+<section class="sec" id="galSec"><h2 class="st">Gallery — <span>completati</span></h2><div class="gg" id="gal"></div></section>
+<footer id="ft">Collezione Modelli</footer>
+<script>
+const CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vR3LOoOLJqM-vqm7XZkEn3cOWQEV3yeXqAQf0zXkmKAJEKOm6wWUK9WJLypbFJAKw63cp8429DrNgb3/pub?gid=1076143511&single=true&output=csv';
+function gp(){try{return JSON.parse(localStorage.getItem('mp')||'{}')}catch{return{}}}
+function sp(k,d){const p=gp();p[k]=d;try{localStorage.setItem('mp',JSON.stringify(p))}catch{const ks=Object.keys(p);if(ks.length){delete p[ks[0]];p[k]=d;localStorage.setItem('mp',JSON.stringify(p))}}}
+let utk=null;
+function onUpload(e){const f=e.target.files[0];if(!f||!utk)return;const r=new FileReader();r.onload=function(ev){const img=new Image();img.onload=function(){const c=document.createElement('canvas');const M=400;let w=img.width,h=img.height;if(w>M||h>M){const s=Math.min(M/w,M/h);w*=s;h*=s}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);sp(utk,c.toDataURL('image/jpeg',.7));rg();rgal()};img.src=ev.target.result};r.readAsDataURL(f);e.target.value=''}
+function tu(k,ev){ev.stopPropagation();utk=k;document.getElementById('fi').click()}
+function tc(t){if(/formula/i.test(t))return'tf1';if(/endurance/i.test(t))return'ten';if(/rally/i.test(t))return'tra';if(/canam/i.test(t))return'tca';if(/nascar/i.test(t))return'tna';return'tot'}
+function pcl(l){const f=[];let i=0,fd='',q=false;while(i<l.length){const c=l[i];if(q){if(c==='"'){if(i+1<l.length&&l[i+1]==='"'){fd+='"';i+=2}else{q=false;i++}}else{fd+=c;i++}}else{if(c==='"'){q=true;i++}else if(c===','){f.push(fd.trim());fd='';i++}else{fd+=c;i++}}}f.push(fd.trim());return f}
+function pcsv(t){const ls=t.split(/\r?\n/).filter(l=>l.trim());if(ls.length<2)return null;const h=pcl(ls[0]);const ms=[];for(let i=1;i<ls.length;i++){const v=pcl(ls[i]);const r={};h.forEach((hh,j)=>{r[hh]=v[j]||''});const n=r['Modello']||'';if(!n)continue;const mood=r['mood']||'';const rs=(r['status']||'').toLowerCase().trim();let st='todo';if(rs==='done')st='done';else if(rs==='doing')st='wip';else if(rs==='studying')st='studying';else if(rs==='on hold')st='onhold';else if(rs==='collecting')st='collecting';else if(rs)st=rs;else if(mood){if(mood.toLowerCase()==='done')st='done';else if(/sto facendo|mezzo iniziato|lo sto facendo/i.test(mood))st='wip'}
+ms.push({name:n,scala:r['Scala']||'',tipo:r['Tipologia']||'',anno:parseInt(r['Anno'])||0,brand:r['Brand']||'',mood:st==='done'?'':mood,status:st,order:parseInt(r['Order'])||0,start:r['Start']||'',link:r['Link']||''})}return ms.length?ms:null}
+async function load(u){try{const r=await fetch(u);if(!r.ok)return null;const t=await r.text();if(t.includes('<!DOCTYPE'))return null;return pcsv(t)}catch{return null}}
+const FB=[{name:"Alfa Romeo 159",scala:"1:20",tipo:"Formula 1",anno:1951,brand:"Revival",mood:"",status:"todo",order:0,start:"",link:""},{name:"Ferrari 312 T",scala:"1:12",tipo:"Formula 1",anno:1975,brand:"Tamiya",mood:"",status:"done",order:0,start:"",link:""}];
+let M=[],F={status:'all',tipo:'all',scala:'all'},S='',SM='status',EK=null;
+const SL={done:'done',wip:'doing',studying:'studying',collecting:'collecting',onhold:'on hold',todo:'to do'};
+const SO={wip:0,studying:1,collecting:2,onhold:3,todo:4,done:5};
+function mf(m){if(F.status!=='all'&&m.status!==F.status)return false;if(F.tipo!=='all'){if(F.tipo==='other'){if(['Formula 1','Endurance'].includes(m.tipo))return false}else if(m.tipo!==F.tipo)return false}if(F.scala!=='all'&&m.scala!==F.scala)return false;if(S&&!m.name.toLowerCase().includes(S))return false;return true}
+function rs(){const c={};M.forEach(m=>{c[m.status]=(c[m.status]||0)+1});document.getElementById('hs').innerHTML=[['done','var(--green)'],['wip','var(--accent2)'],['studying','var(--purple)'],['collecting','var(--pink)'],['onhold','var(--text3)']].map(([k,col])=>`<div><div class="hs-n" style="color:${col}">${c[k]||0}</div><div class="hs-l">${SL[k]||k}</div></div>`).join('')+`<div><div class="hs-n" style="color:var(--text2)">${M.length}</div><div class="hs-l">totale</div></div>`}
+function rtl(){const its=[];M.filter(m=>m.status==='wip').forEach(m=>its.push({...m,ts:'w'}));M.filter(m=>m.status==='studying').forEach(m=>its.push({...m,ts:'s'}));M.filter(m=>m.order>0&&m.status!=='done'&&m.status!=='wip').sort((a,b)=>a.order-b.order).forEach(m=>its.push({...m,ts:'p'}));const el=document.getElementById('tl'),sec=document.getElementById('tlSec');if(!its.length){sec.style.display='none';return}sec.style.display='';el.innerHTML=its.map(m=>`<div class="ti"><div class="td ${m.ts}"></div><div style="font-family:'Barlow Condensed',sans-serif;font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em">${m.ts==='p'&&m.order?'#'+m.order+' — '+m.start:m.ts==='w'?'doing':'studying'}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:1.15rem;margin-top:2px">${m.name} <span style="color:var(--text3);font-weight:400">${m.scala}</span></div><div style="font-size:.8rem;color:var(--text2);margin-top:2px">${m.mood||m.brand}</div></div>`).join('')}
+function rg(){let fl=M.filter(mf);const ph=gp();if(SM==='status')fl.sort((a,b)=>{const sa=SO[a.status]??4,sb=SO[b.status]??4;return sa!==sb?sa-sb:a.name.localeCompare(b.name)});else fl.sort((a,b)=>(a.anno||9999)-(b.anno||9999));document.getElementById('rc').textContent=fl.length+' modelli';document.getElementById('grid').innerHTML=fl.map(m=>{const k=m.name+'|'+m.scala;const ex=EK===k;const bg=['done','wip','studying','collecting','onhold','todo'].includes(m.status)?m.status:'todo';const lb=SL[m.status]||'to do';const p=ph[k];const t=tc(m.tipo);const hl=m.link&&m.link.startsWith('http');return`<div class="card${ex?' exp':''}" onclick="tgc('${k.replace(/'/g,"\\'")}')"><div class="cv ${p?'':t}">${p?`<img src="${p}">`:`<div class="cn">${m.name}</div><div class="cs">${m.scala}</div><div class="ca">${m.anno||''}</div>`}<span class="badge b-${bg}">${lb}</span><span class="cu" onclick="tu('${k.replace(/'/g,"\\'")}',event)">+ foto</span>${hl?`<a class="cl" href="${m.link}" target="_blank" onclick="event.stopPropagation()">scheda kit</a>`:''}</div><div class="cb"><div class="nm">${m.name}</div>${m.anno?`<div class="yr">${m.anno}</div>`:''}<div class="mt"><span class="pill">${m.scala}</span><span class="pill">${m.tipo}</span><span class="pill">${m.brand}</span></div>${m.mood?`<div class="mood">${m.mood}</div>`:''}</div></div>`}).join('')}
+function rgal(){const d=M.filter(m=>m.status==='done').sort((a,b)=>(b.anno||0)-(a.anno||0));const sec=document.getElementById('galSec');if(!d.length){sec.style.display='none';return}sec.style.display='';const ph=gp();document.getElementById('gal').innerHTML=d.map(m=>{const k=m.name+'|'+m.scala;const p=ph[k];const t=tc(m.tipo);return`<div class="gi ${p?'':t}">${p?`<img src="${p}">`:''}<div class="go" style="${p?'':'opacity:1;background:transparent'}"><div class="gp">${!p?'<div class="gc2">&#10003;</div>':''}<div class="gn">${m.name}</div><div class="gm">${m.anno||''} &middot; ${m.scala} &middot; ${m.brand}</div></div></div></div>`}).join('')}
+function tgc(k){EK=EK===k?null:k;rg()}
+function toggleSort(){SM=SM==='status'?'anno':'status';document.getElementById('sortBtn').textContent=SM==='status'?'↕ Anno':'↕ Stato';rg()}
+function copyPrompt(){const doing=M.filter(m=>m.status==='wip').map(m=>`${m.name} (${m.anno}, ${m.scala}, ${m.tipo})`).join(', ');const done=M.filter(m=>m.status==='done').map(m=>`${m.name} (${m.anno}, ${m.scala})`).join(', ');const av=M.filter(m=>!['done','wip'].includes(m.status)).map(m=>{let s=`- ${m.name} | ${m.anno} | ${m.scala} | ${m.tipo} | ${m.brand}`;if(m.mood)s+=` | ${m.mood}`;if(m.status==='studying')s+=' | [STUDYING]';if(m.status==='collecting')s+=' | [COLLECTING]';return s}).join('\n');const pr=`Suggeriscimi i prossimi 5 modelli da costruire dalla mia collezione.\n\nATTUALMENTE IN COSTRUZIONE: ${doing||'nessuno'}\nGIÀ COMPLETATI: ${done||'nessuno'}\n\nCRITERI (in ordine di priorità):\n1. Alternare epoche (non due auto dello stesso periodo di fila)\n2. Inserire comfort kit semplici tra modelli complessi\n3. Alternare scale (non due 1:12 di fila)\n4. Dare priorità ai modelli con status "studying"\n\nMODELLI DISPONIBILI:\n${av}\n\nPer ognuno dei 5 spiega brevemente perché lo metti in quella posizione.`;navigator.clipboard.writeText(pr).then(()=>{document.getElementById('pc').classList.add('v');setTimeout(()=>document.getElementById('pc').classList.remove('v'),8000)}).catch(()=>{const ta=document.createElement('textarea');ta.value=pr;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);document.getElementById('pc').classList.add('v');setTimeout(()=>document.getElementById('pc').classList.remove('v'),8000)})}
+document.querySelectorAll('.fg').forEach(g=>{const fn=g.dataset.f;g.querySelectorAll('.fb').forEach(b=>{b.addEventListener('click',()=>{F[fn]=b.dataset.v;g.querySelectorAll('.fb').forEach(x=>x.classList.remove('a'));b.classList.add('a');EK=null;rg()})})});
+document.getElementById('si').addEventListener('input',e=>{S=e.target.value.toLowerCase();EK=null;rg()});
+(async()=>{let d=await load(CSV_URL);let src=d?'sheets':'fallback';if(!d)d=FB;M=d;rs();rtl();rg();rgal();const ft=document.getElementById('ft');if(src==='sheets'){ft.innerHTML='Collezione Modelli &bull; Dati live da Google Sheets &bull; '+M.length+' modelli';ft.style.color='#4a9e5c'}else{ft.innerHTML='Collezione Modelli &bull; Dati offline';ft.style.color='#c8362e'}})();
+</script>
+</body>
+</html>
