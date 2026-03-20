@@ -1,434 +1,504 @@
 <!DOCTYPE html>
 
-<html class="light" lang="it"><head>
+<html lang="it"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LA COLLEZIONE - Vintage Scale Modelling</title>
+<title>LA COLLEZIONE — Vintage Scale Modelling</title>
 <!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind CSS -->
+<!-- Tailwind CSS for utility and layout -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "secondary-container": "#d6d4d3",
-              "on-surface": "#1a1c1c",
-              "surface-container-low": "#f3f3f4",
-              "on-primary-container": "#ffffff",
-              "on-secondary-container": "#1b1c1c",
-              "error-container": "#ffdad6",
-              "surface-variant": "#e2e2e2",
-              "on-background": "#1a1c1c",
-              "on-surface-variant": "#474747",
-              "secondary-fixed-dim": "#adabaa",
-              "background": "#f9f9f9",
-              "tertiary-container": "#747474",
-              "surface-container": "#eeeeee",
-              "on-secondary": "#ffffff",
-              "tertiary": "#3b3b3c",
-              "surface-tint": "#5e5e5e",
-              "primary": "#000000",
-              "surface-container-highest": "#e2e2e2",
-              "primary-fixed-dim": "#474747",
-              "secondary": "#5f5e5e",
-              "surface-container-high": "#e8e8e8",
-              "on-primary-fixed": "#ffffff",
-              "tertiary-fixed-dim": "#464747",
-              "surface-container-lowest": "#ffffff",
-              "error": "#ba1a1a",
-              "inverse-primary": "#c6c6c6",
-              "on-tertiary-fixed-variant": "#e3e2e2",
-              "surface-dim": "#dadada",
-              "on-tertiary-container": "#ffffff",
-              "on-tertiary": "#e3e2e2",
-              "surface-bright": "#f9f9f9",
-              "surface": "#f9f9f9",
-              "tertiary-fixed": "#5e5e5e",
-              "primary-container": "#3b3b3b",
-              "outline-variant": "#c6c6c6",
-              "secondary-fixed": "#c8c6c5",
-              "on-primary": "#e2e2e2",
-              "on-error-container": "#410002",
-              "on-secondary-fixed-variant": "#3c3b3b",
-              "on-secondary-fixed": "#1b1c1c",
-              "outline": "#777777",
-              "on-tertiary-fixed": "#ffffff",
-              "on-primary-fixed-variant": "#e2e2e2",
-              "inverse-surface": "#2f3131",
-              "on-error": "#ffffff",
-              "primary-fixed": "#5e5e5e",
-              "inverse-on-surface": "#f0f1f1"
-            },
-            fontFamily: {
-              "headline": ["Space Grotesk"],
-              "body": ["Work Sans"],
-              "label": ["Space Grotesk"]
-            },
-            borderRadius: {"DEFAULT": "0rem", "lg": "0rem", "xl": "0rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
 <style>
-        .halftone {
-            background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-            background-size: 4px 4px;
-            opacity: 0.1;
-        }
-        
-        .comic-border {
-            border: 4px solid black;
-            box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
-        }
+:root {
+  --primary: #000000;
+  --surface: #ffffff;
+  --accent: #000000;
+  --border-width: 4px;
+}
 
-        .stamp-badge {
-            transform: rotate(-2deg);
-            border: 3px solid currentColor;
-            padding: 2px 8px;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { 
+    background: #fdfdfd; 
+    color: var(--primary); 
+    font-family: 'Space Grotesk', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-        .speed-lines {
-            background: repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 10px,
-                rgba(0,0,0,0.05) 10px,
-                rgba(0,0,0,0.05) 11px
-            );
-        }
+/* Comic / Ink Aesthetics */
+.halftone {
+    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 0.05;
+}
 
-        @media print {
-            .no-print, nav, aside, button, .search-bar-container {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-                padding: 0 !important;
-            }
-            .comic-border {
-                box-shadow: none !important;
-                border-width: 2px !important;
-                break-inside: avoid;
-            }
-            main {
-                margin-left: 0 !important;
-                margin-top: 0 !important;
-                padding: 0 !important;
-            }
-        }
+.speed-lines {
+    background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        rgba(0,0,0,0.03) 10px,
+        rgba(0,0,0,0.03) 11px
+    );
+}
 
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
+.comic-border {
+    border: var(--border-width) solid black;
+    box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+}
+
+.stamp-badge {
+    transform: rotate(-3deg);
+    border: 3px solid currentColor;
+    padding: 2px 8px;
+    font-weight: 900;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    padding: 6rem 3rem 4rem;
+    background: white;
+    border-bottom: var(--border-width) solid black;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: .9;
+    letter-spacing: -.05em;
+    text-transform: uppercase;
+    font-style: italic;
+    text-decoration: underline;
+    text-decoration-thickness: 8px;
+    text-underline-offset: 12px;
+}
+
+.hero-sub {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.hs-n { font-weight: 900; font-size: 3rem; line-height: 1; }
+.hs-l { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; opacity: 0.6; }
+
+/* TOOLBAR */
+.toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: var(--border-width) solid black;
+    padding: 1rem 3rem;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+}
+
+.si {
+    padding: 10px 15px;
+    background: white;
+    border: 3px solid black;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    width: 250px;
+    text-transform: uppercase;
+}
+
+.si:focus { outline: none; background: #ffff00; }
+
+.fg { display: flex; gap: 4px; }
+.fb {
+    padding: 6px 12px;
+    font-size: .75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: white;
+    border: 2px solid black;
+    cursor: pointer;
+    transition: .1s;
+}
+.fb:hover, .fb.a { background: black; color: white; }
+
+.sb {
+    padding: 8px 16px;
+    font-size: .75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: black;
+    color: white;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+/* ESPORTA PDF BUTTON */
+.export-btn {
+    margin-left: auto;
+    background: #000;
+    color: #fff;
+    padding: 10px 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-style: italic;
+    border: 3px solid #000;
+    transition: all 0.2s;
+}
+.export-btn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 4px 4px 0px #000;
+    transform: translate(-2px, -2px);
+}
+
+/* GRID & CARDS */
+.gc { padding: 3rem; }
+.gr { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
+
+.card {
+    background: white;
+    border: var(--border-width) solid black;
+    box-shadow: 10px 10px 0px 0px rgba(0,0,0,1);
+    transition: .15s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.card:hover { transform: translate(-4px, -4px); box-shadow: 14px 14px 0px 0px rgba(0,0,0,1); }
+
+.cv { 
+    width: 100%; 
+    height: 200px; 
+    position: relative; 
+    border-bottom: var(--border-width) solid black; 
+    background: #eee;
+    overflow: hidden;
+}
+.cv img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(120%); }
+.cv .cn { 
+    font-weight: 900; font-size: 1.5rem; text-transform: uppercase; font-style: italic; 
+    padding: 20px; line-height: 1; position: relative; z-index: 2;
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
+}
+
+.b-done { color: #1a5c1a; }
+.b-wip { color: #8a5a00; }
+.b-studying { color: #4a1a8a; }
+.b-collecting { color: #8a1a4a; }
+.b-todo { color: #333; }
+
+/* CARD BODY */
+.cb { padding: 20px; position: relative; background: white; }
+.cb .nm { font-weight: 900; font-size: 1.4rem; line-height: 1.1; text-transform: uppercase; margin-bottom: 8px; }
+.cb .yr { font-weight: 800; font-size: 1rem; color: #000; opacity: 0.5; margin-bottom: 12px; }
+.cb .pill { 
+    display: inline-block; padding: 2px 8px; border: 2px solid black; font-weight: 800; 
+    font-size: 0.7rem; text-transform: uppercase; margin-right: 4px; margin-bottom: 4px;
+}
+.mood { 
+    font-weight: 500; font-size: .85rem; margin-top: 15px; border-top: 2px dashed #000; 
+    padding-top: 10px; font-style: italic; max-height: 0; overflow: hidden; transition: .3s;
+}
+.card.exp .mood { max-height: 300px; }
+
+/* SECTIONS */
+.sec { padding: 4rem 3rem; border-top: var(--border-width) solid black; }
+.st { font-weight: 900; font-size: 2.5rem; text-transform: uppercase; font-style: italic; margin-bottom: 2rem; }
+
+/* TIMELINE */
+.tl { position: relative; padding-left: 50px; }
+.tl::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 6px; background: black; }
+.ti { position: relative; margin-bottom: 3rem; }
+.td { 
+    position: absolute; left: -44px; top: 4px; width: 24px; height: 24px; 
+    background: white; border: 6px solid black; 
+}
+
+/* BUTTONS */
+.pb {
+    padding: 15px 35px;
+    background: black;
+    color: white;
+    border: none;
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-style: italic;
+    cursor: pointer;
+    box-shadow: 8px 8px 0px #ccc;
+}
+.pb:active { transform: translate(4px, 4px); box-shadow: 4px 4px 0px #ccc; }
+
+footer { padding: 3rem; border-top: var(--border-width) solid black; text-align: center; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; }
+
+@media print {
+    .toolbar, .pb, .cu, .cl, .export-btn, footer { display: none !important; }
+    .card { box-shadow: none !important; border-width: 2px !important; break-inside: avoid; }
+    .hero { border-bottom-width: 2px !important; }
+}
+</style>
 </head>
-<body class="bg-surface font-body text-on-surface">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white dark:bg-zinc-900 border-b-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]">
-<div class="flex items-center gap-4">
-<h1 class="text-4xl font-black italic uppercase tracking-tighter text-black dark:text-white underline decoration-4 underline-offset-8 font-headline">
-                LA COLLEZIONE
-            </h1>
-</div>
-<div class="hidden md:flex flex-1 max-w-xl mx-8 search-bar-container">
-<div class="relative w-full">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">search</span>
-<input class="w-full bg-surface-container-lowest border-b-4 border-black p-3 pl-12 font-headline uppercase font-bold focus:outline-none focus:ring-0" id="searchInput" placeholder="CERCA MODELLO O MARCA..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<button class="bg-black text-white px-6 py-2 font-headline font-black italic uppercase tracking-tighter border-2 border-black hover:bg-white hover:text-black transition-all active:translate-x-1 active:translate-y-1 active:shadow-none no-print" onclick="window.print()">
-                ESPORTA PDF
-            </button>
-</div>
-</header>
-<!-- SideNavBar -->
-<aside class="hidden md:flex flex-col fixed left-0 top-24 h-[calc(100vh-6rem)] z-40 border-r-4 border-black dark:border-white w-64 bg-zinc-50 dark:bg-zinc-950 no-print">
-<div class="p-6 border-b-4 border-black">
-<p class="font-headline font-black text-xl text-black">GARAGE SPECS</p>
-<p class="font-headline text-xs font-bold opacity-60">VINTAGE SCALE MODELLING</p>
-</div>
-<nav class="flex-1 py-4 overflow-y-auto">
-<ul class="space-y-1 px-2">
-<li>
-<button class="w-full bg-black text-white p-3 flex items-center gap-3 font-headline font-bold uppercase text-sm transition-none active-nav-item" onclick="filterByStatus('all')">
-<span class="material-symbols-outlined">dashboard</span> Overview
-                    </button>
-</li>
-<li>
-<button class="w-full text-black p-3 flex items-center gap-3 font-headline font-bold uppercase text-sm hover:bg-zinc-200" onclick="filterByStatus('Done')">
-<span class="material-symbols-outlined">check_circle</span> Done
-                    </button>
-</li>
-<li>
-<button class="w-full text-black p-3 flex items-center gap-3 font-headline font-bold uppercase text-sm hover:bg-zinc-200" onclick="filterByStatus('Doing')">
-<span class="material-symbols-outlined">construction</span> Doing
-                    </button>
-</li>
-<li>
-<button class="w-full text-black p-3 flex items-center gap-3 font-headline font-bold uppercase text-sm hover:bg-zinc-200" onclick="filterByStatus('Studying')">
-<span class="material-symbols-outlined">menu_book</span> Studying
-                    </button>
-</li>
-<li>
-<button class="w-full text-black p-3 flex items-center gap-3 font-headline font-bold uppercase text-sm hover:bg-zinc-200" onclick="filterByStatus('Wishlist')">
-<span class="material-symbols-outlined">star</span> Wishlist
-                    </button>
-</li>
-</ul>
-</nav>
-<div class="p-4 border-t-4 border-black text-[10px] font-headline font-bold opacity-40 uppercase">
-            © 1974 Racing Archives
-        </div>
-</aside>
-<!-- Main Content -->
-<main class="md:ml-64 mt-28 p-8 min-h-screen speed-lines">
-<!-- Stats Row -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12 no-print">
-<div class="comic-border bg-white p-6 relative overflow-hidden group">
+<body class="speed-lines">
+<section class="hero">
 <div class="halftone absolute inset-0"></div>
 <div class="relative z-10">
-<p class="font-headline font-black text-4xl mb-1" id="stat-total">0</p>
-<p class="font-headline font-bold text-xs uppercase tracking-widest text-secondary">Totale Kit</p>
+<h1>La <span>Collezione</span></h1>
+<p class="hero-sub">Inventario modelli • Piano di montaggio</p>
+<div class="hero-stats" id="hs"></div>
 </div>
-<span class="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10 group-hover:scale-110 transition-transform">inventory_2</span>
+</section>
+<div class="toolbar no-print">
+<input class="si" id="si" placeholder="CERCA MODELLO..." type="text"/>
+<div class="fg" data-f="status">
+<button class="fb a" data-v="all">Tutti</button>
+<button class="fb" data-v="done">Finito</button>
+<button class="fb" data-v="wip">Lavorando</button>
+<button class="fb" data-v="studying">Studio</button>
 </div>
-<div class="comic-border bg-white p-6 relative overflow-hidden group border-black">
-<div class="halftone absolute inset-0"></div>
-<div class="relative z-10">
-<p class="font-headline font-black text-4xl mb-1" id="stat-done">0</p>
-<p class="font-headline font-bold text-xs uppercase tracking-widest text-secondary">Completati</p>
+<div class="fg" data-f="scala">
+<button class="fb a" data-v="all">Tutte Scale</button>
+<button class="fb" data-v="1:12">1:12</button>
+<button class="fb" data-v="1:24">1:24</button>
 </div>
-<span class="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10 group-hover:scale-110 transition-transform">verified</span>
+<button class="sb" id="sortBtn" onclick="toggleSort()">↕ ANNO</button>
+<button class="export-btn" onclick="window.print()">ESPORTA PDF</button>
 </div>
-<div class="comic-border bg-white p-6 relative overflow-hidden group">
-<div class="halftone absolute inset-0"></div>
-<div class="relative z-10">
-<p class="font-headline font-black text-4xl mb-1" id="stat-doing">0</p>
-<p class="font-headline font-bold text-xs uppercase tracking-widest text-secondary">In Lavoro</p>
-</div>
-<span class="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10 group-hover:scale-110 transition-transform">settings_slow_motion</span>
-</div>
-<div class="comic-border bg-white p-6 relative overflow-hidden group">
-<div class="halftone absolute inset-0"></div>
-<div class="relative z-10">
-<p class="font-headline font-black text-4xl mb-1" id="stat-wishlist">0</p>
-<p class="font-headline font-bold text-xs uppercase tracking-widest text-secondary">Desideri</p>
-</div>
-<span class="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl opacity-10 group-hover:scale-110 transition-transform">auto_awesome</span>
+<div class="gc">
+<div class="gr" id="grid">
+<!-- JS will populate this -->
 </div>
 </div>
-<!-- Dashboard Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="kitsGrid">
-<!-- Loader Placeholder -->
-<div class="col-span-full py-20 text-center">
-<div class="inline-block animate-spin font-black text-4xl">⚙️</div>
-<p class="font-headline font-black uppercase mt-4 text-xl italic">Caricamento Archivio...</p>
-</div>
-</div>
-</main>
-<!-- Photo Upload Modal -->
-<div class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" id="photoModal">
-<div class="bg-white comic-border w-full max-w-md p-8 relative">
-<button class="absolute top-4 right-4 text-primary hover:scale-125 transition-transform" onclick="closePhotoModal()">
-<span class="material-symbols-outlined font-black">close</span>
-</button>
-<h2 class="font-headline font-black text-2xl uppercase italic mb-6 underline decoration-4 underline-offset-4">Carica Foto Modello</h2>
-<div class="space-y-6">
-<div class="border-4 border-dashed border-zinc-300 p-8 text-center bg-zinc-50 hover:bg-zinc-100 transition-colors cursor-pointer" id="dropZone">
-<span class="material-symbols-outlined text-5xl mb-2 text-zinc-400">add_a_photo</span>
-<p class="font-headline font-bold text-sm uppercase">Trascina o Clicca per Caricare</p>
-<input accept="image/*" class="hidden" id="photoInput" type="file"/>
-</div>
-<div class="hidden" id="photoPreview">
-<img alt="Preview" class="w-full h-48 object-cover comic-border" data-alt="Anteprima della foto del modello caricato" id="previewImg" src=""/>
-<button class="w-full mt-4 bg-black text-white font-headline font-black py-3 uppercase italic text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]" onclick="savePhoto()">Salva Foto</button>
-</div>
-</div>
-</div>
-</div>
+<input accept="image/*" class="hidden" id="fi" onchange="onUpload(event)" type="file"/>
+<section class="sec" id="tlSec">
+<h2 class="st">Piano di montaggio</h2>
+<div class="tl" id="tl"></div>
+</section>
+<section class="sec no-print">
+<h2 class="st">Pianifica i prossimi 5</h2>
+<button class="pb" onclick="copyPrompt()">◆ Copia prompt per AI</button>
+<div class="hidden mt-4 font-bold uppercase text-sm" id="pc">Prompt copiato negli appunti!</div>
+</section>
+<section class="sec" id="galSec">
+<h2 class="st">Archivio Storico — completati</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="gal"></div>
+</section>
+<footer id="ft">VINTAGE SCALE MODELLING 1974-2024</footer>
 <script>
-        // CONFIGURAZIONE DATI
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTo_f-m4H6U7v7Oq8qW6J0yXU7aQz8O_Yv-w-v-W-L-v-E-V-H-A-Q-S-G-Z-J-X-H-Q/pub?output=csv';
-        let allKits = [];
-        let currentEditingId = null;
+// Logic preserved exactly from source TEXT_3
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR3LOoOLJqM-vqm7XZkEn3cOWQEV3yeXqAQf0zXkmKAJEKOm6wWUK9WJLypbFJAKw63cp8429DrNgb3/pub?gid=1076143511&single=true&output=csv';
 
-        // CARICAMENTO DATI
-        async function fetchKits() {
-            try {
-                // In un ambiente reale, usiamo PapaParse o fetch()
-                // Simuliamo il caricamento per lo sviluppo della UI se l'URL non è raggiungibile
-                const response = await fetch(CSV_URL);
-                const csvText = await response.text();
-                parseCSV(csvText);
-            } catch (error) {
-                console.error('Error loading kits:', error);
-                // Fallback demo data
-                allKits = [
-                    { id: '1', brand: 'Tamiya', model: 'Porsche 934 RSR', scale: '1:24', status: 'Done', notes: 'Orange Jägermeister livery' },
-                    { id: '2', brand: 'Fujimi', model: 'Ferrari 288 GTO', scale: '1:24', status: 'Doing', notes: 'Engine detailing in progress' },
-                    { id: '3', brand: 'Revell', model: 'BMW M1 Procar', scale: '1:24', status: 'Wishlist', notes: 'Classic BBS wheels needed' },
-                    { id: '4', brand: 'Hasegawa', model: 'Lancia Stratos HF', scale: '1:24', status: 'Studying', notes: 'Researching Alitalia decals' }
-                ];
-                renderKits(allKits);
-                updateStats();
-            }
-        }
+let photoCache = {};
+function loadPhotos() {
+  try {
+    photoCache = JSON.parse(localStorage.getItem('modelli_foto') || '{}');
+    const old = localStorage.getItem('mp');
+    if (old) {
+      const parsed = JSON.parse(old);
+      photoCache = { ...parsed, ...photoCache };
+      localStorage.setItem('modelli_foto', JSON.stringify(photoCache));
+      localStorage.removeItem('mp');
+    }
+  } catch { photoCache = {}; }
+}
 
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const headers = lines[0].split(',');
-            allKits = lines.slice(1).map((line, index) => {
-                const values = line.split(',');
-                return {
-                    id: index.toString(),
-                    brand: values[0] || 'Unknown',
-                    model: values[1] || 'Unknown',
-                    scale: values[2] || '1:24',
-                    status: (values[3] || 'Wishlist').trim(),
-                    notes: values[4] || ''
-                };
-            });
-            renderKits(allKits);
-            updateStats();
-        }
+function savePhoto(key, dataUrl) {
+  photoCache[key] = dataUrl;
+  try { localStorage.setItem('modelli_foto', JSON.stringify(photoCache)); } catch (e) {
+    const keys = Object.keys(photoCache);
+    if (keys.length > 1) { delete photoCache[keys[0]]; photoCache[key] = dataUrl; try { localStorage.setItem('modelli_foto', JSON.stringify(photoCache)); } catch {} }
+  }
+}
 
-        // RENDERING
-        function renderKits(kits) {
-            const grid = document.getElementById('kitsGrid');
-            grid.innerHTML = kits.map(kit => {
-                const photo = localStorage.getItem(`photo_${kit.id}`) || `https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=800&auto=format&fit=crop`;
-                const statusColor = getStatusColor(kit.status);
-                
-                return `
-                    <div class="bg-white comic-border flex flex-col group hover:-translate-y-2 transition-transform duration-200">
-                        <!-- Card Header / Image -->
-                        <div class="relative h-48 overflow-hidden border-b-4 border-black">
-                            <div class="halftone absolute inset-0 z-10 pointer-events-none"></div>
-                            <img src="${photo}" alt="${kit.model}" class="w-full h-full object-cover grayscale contrast-125" data-alt="Immagine in bianco e nero del modello ${kit.model}">
-                            <div class="absolute top-2 right-2 z-20">
-                                <span class="stamp-badge bg-white ${statusColor} text-xs">${kit.status}</span>
-                            </div>
-                            <button onclick="openPhotoModal('${kit.id}')" class="absolute bottom-2 right-2 z-20 bg-black text-white p-2 no-print opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span class="material-symbols-outlined text-sm">photo_camera</span>
-                            </button>
-                        </div>
+let utk = null;
+function onUpload(e) {
+  const f = e.target.files[0];
+  if (!f || !utk) return;
+  const r = new FileReader();
+  r.onload = function(ev) {
+    const img = new Image();
+    img.onload = function() {
+      const c = document.createElement('canvas');
+      const M = 800;
+      let w = img.width, h = img.height;
+      if (w > M || h > M) { const s = Math.min(M/w, M/h); w *= s; h *= s; }
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      savePhoto(utk, c.toDataURL('image/jpeg', .85));
+      rg(); rgal();
+    };
+    img.src = ev.target.result;
+  };
+  r.readAsDataURL(f);
+  e.target.value = '';
+}
 
-                        <!-- Card Body -->
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-headline font-black text-2xl uppercase italic tracking-tighter leading-none mb-1">${kit.model}</h3>
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="bg-zinc-200 px-2 py-0.5 text-[10px] font-headline font-black uppercase tracking-tighter">${kit.brand}</span>
-                                    <span class="bg-black text-white px-2 py-0.5 text-[10px] font-headline font-black uppercase tracking-tighter">${kit.scale}</span>
-                                </div>
-                                <p class="text-xs font-medium text-secondary italic border-l-2 border-zinc-300 pl-2 py-1">${kit.notes || 'Nessuna nota aggiuntiva.'}</p>
-                            </div>
-                            
-                            <!-- Action Footer -->
-                            <div class="mt-4 pt-4 border-t-2 border-black border-dotted flex justify-between items-center no-print">
-                                <span class="text-[10px] font-headline font-bold opacity-30">REF: #${kit.id.padStart(4, '0')}</span>
-                                <div class="flex gap-2">
-                                    <button class="p-1 hover:bg-black hover:text-white transition-colors"><span class="material-symbols-outlined text-sm">edit</span></button>
-                                    <button class="p-1 hover:bg-black hover:text-white transition-colors"><span class="material-symbols-outlined text-sm">visibility</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+function tu(k, ev) { ev.stopPropagation(); utk = k; document.getElementById('fi').click(); }
 
-        function getStatusColor(status) {
-            switch(status.toLowerCase()) {
-                case 'done': return 'text-green-800 border-green-800';
-                case 'doing': return 'text-blue-800 border-blue-800';
-                case 'studying': return 'text-orange-800 border-orange-800';
-                case 'wishlist': return 'text-zinc-500 border-zinc-500';
-                default: return 'text-black border-black';
-            }
-        }
+function pcl(l) {
+  const f = []; let i = 0, fd = '', q = false;
+  while (i < l.length) {
+    const c = l[i];
+    if (q) { if (c === '"') { if (i+1 < l.length && l[i+1] === '"') { fd += '"'; i += 2; } else { q = false; i++; } } else { fd += c; i++; } }
+    else { if (c === '"') { q = true; i++; } else if (c === ',') { f.push(fd.trim()); fd = ''; i++; } else { fd += c; i++; } }
+  }
+  f.push(fd.trim()); return f;
+}
 
-        function updateStats() {
-            document.getElementById('stat-total').innerText = allKits.length;
-            document.getElementById('stat-done').innerText = allKits.filter(k => k.status.toLowerCase() === 'done').length;
-            document.getElementById('stat-doing').innerText = allKits.filter(k => k.status.toLowerCase() === 'doing').length;
-            document.getElementById('stat-wishlist').innerText = allKits.filter(k => k.status.toLowerCase() === 'wishlist').length;
-        }
+function pcsv(t) {
+  const ls = t.split(/\r?\n/).filter(l => l.trim());
+  if (ls.length < 2) return null;
+  const h = pcl(ls[0]); const ms = [];
+  for (let i = 1; i < ls.length; i++) {
+    const v = pcl(ls[i]); const r = {}; h.forEach((hh, j) => { r[hh] = v[j] || ''; });
+    const n = r['Modello'] || ''; if (!n) continue;
+    const mood = r['mood'] || ''; const rs = (r['status'] || '').toLowerCase().trim();
+    let st = 'todo';
+    if (rs === 'done') st = 'done'; else if (rs === 'doing') st = 'wip';
+    else if (rs === 'studying') st = 'studying'; else if (rs === 'on hold') st = 'onhold';
+    else if (rs === 'collecting') st = 'collecting'; else if (rs) st = rs;
+    ms.push({ name: n, scala: r['Scala'] || '', tipo: r['Tipologia'] || '', anno: parseInt(r['Anno']) || 0, brand: r['Brand'] || '', mood: st === 'done' ? '' : mood, status: st, order: parseInt(r['Order']) || 0, start: r['Start'] || '', link: r['Link'] || '' });
+  }
+  return ms.length ? ms : null;
+}
 
-        // FILTRI E RICERCA
-        function filterByStatus(status) {
-            // UI Visual Feedback
-            document.querySelectorAll('nav button').forEach(btn => {
-                btn.classList.remove('bg-black', 'text-white');
-                btn.classList.add('text-black');
-            });
-            event.currentTarget.classList.add('bg-black', 'text-white');
+async function load(u) {
+  try { const r = await fetch(u); if (!r.ok) return null; const t = await r.text(); if (t.includes('<!DOCTYPE')) return null; return pcsv(t); }
+  catch { return null; }
+}
 
-            if (status === 'all') {
-                renderKits(allKits);
-            } else {
-                const filtered = allKits.filter(k => k.status.toLowerCase() === status.toLowerCase());
-                renderKits(filtered);
-            }
-        }
+let M = [], F = { status: 'all', tipo: 'all', scala: 'all' }, S = '', SM = 'status', EK = null;
+const SL = { done: 'DONE', wip: 'WIP', studying: 'RESEARCH', collecting: 'WISH', onhold: 'HOLD', todo: 'QUEUE' };
+const SO = { wip: 0, studying: 1, collecting: 2, onhold: 3, todo: 4, done: 5 };
 
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = allKits.filter(k => 
-                k.model.toLowerCase().includes(term) || 
-                k.brand.toLowerCase().includes(term)
-            );
-            renderKits(filtered);
-        });
+function mf(m) {
+  if (F.status !== 'all' && m.status !== F.status) return false;
+  if (F.tipo !== 'all') { if (F.tipo === 'other') { if (['Formula 1', 'Endurance'].includes(m.tipo)) return false; } else if (m.tipo !== F.tipo) return false; }
+  if (F.scala !== 'all' && m.scala !== F.scala) return false;
+  if (S && !m.name.toLowerCase().includes(S)) return false;
+  return true;
+}
 
-        // GESTIONE FOTO (LocalStorage)
-        function openPhotoModal(id) {
-            currentEditingId = id;
-            document.getElementById('photoModal').classList.remove('hidden');
-        }
+function rs() {
+  const c = {}; M.forEach(m => { c[m.status] = (c[m.status] || 0) + 1; });
+  document.getElementById('hs').innerHTML = [
+    ['done', 'black'], ['wip', 'black'], ['studying', 'black']
+  ].map(([k, col]) => `<div><div class="hs-n">${c[k]||0}</div><div class="hs-l">${SL[k]||k}</div></div>`).join('') +
+  `<div><div class="hs-n">${M.length}</div><div class="hs-l">TOTALE</div></div>`;
+}
 
-        function closePhotoModal() {
-            document.getElementById('photoModal').classList.add('hidden');
-            document.getElementById('photoPreview').classList.add('hidden');
-            document.getElementById('previewImg').src = '';
-            currentEditingId = null;
-        }
+function rtl() {
+  const its = [];
+  M.filter(m => m.status === 'wip').forEach(m => its.push({...m, ts: 'w'}));
+  M.filter(m => m.status === 'studying').forEach(m => its.push({...m, ts: 's'}));
+  M.filter(m => m.order > 0 && m.status !== 'done' && m.status !== 'wip').sort((a, b) => a.order - b.order).forEach(m => its.push({...m, ts: 'p'}));
+  const el = document.getElementById('tl'), sec = document.getElementById('tlSec');
+  if (!its.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  el.innerHTML = its.map(m => `<div class="ti">
+    <div class="td"></div>
+    <div class="font-bold text-xs uppercase tracking-widest opacity-50 mb-1">${m.ts==='p'&&m.order?'#'+m.order+' — '+m.start:m.ts==='w'?'doing':'studying'}</div>
+    <div class="font-black text-xl italic uppercase underline decoration-2 underline-offset-4">${m.name}</div>
+    <div class="mt-2 text-sm font-bold opacity-60">${m.mood||m.brand} | ${m.scala}</div>
+  </div>`).join('');
+}
 
-        const photoInput = document.getElementById('photoInput');
-        const dropZone = document.getElementById('dropZone');
+function rg() {
+  let fl = M.filter(mf);
+  if (SM === 'status') fl.sort((a, b) => { const sa = SO[a.status] ?? 4, sb = SO[b.status] ?? 4; return sa !== sb ? sa - sb : a.name.localeCompare(b.name); });
+  else fl.sort((a, b) => (a.anno || 9999) - (b.anno || 9999));
+  
+  document.getElementById('grid').innerHTML = fl.map(m => {
+    const k = m.name + '|' + m.scala;
+    const ex = EK === k;
+    const lb = SL[m.status] || 'QUEUE';
+    const p = photoCache[k];
+    return `<div class="card${ex?' exp':''}" onclick="tgc('${k.replace(/'/g,"\\'")}')">
+      <div class="halftone absolute inset-0 pointer-events-none"></div>
+      <div class="cv">
+        ${p ? `<img src="${p}">` : `<div class="cn">${m.name}</div>`}
+        <span class="badge stamp-badge bg-white b-${m.status}">${lb}</span>
+        <button onclick="tu('${k.replace(/'/g,"\\'")}',event)" class="absolute bottom-2 right-2 bg-black text-white p-2 no-print">
+            <span class="material-symbols-outlined text-sm">photo_camera</span>
+        </button>
+      </div>
+      <div class="cb">
+        <div class="nm">${m.name}</div>
+        ${m.anno ? `<div class="yr">${m.anno} &bull; ${m.brand}</div>` : `<div class="yr">${m.brand}</div>`}
+        <div class="mt-2 flex flex-wrap"><span class="pill">${m.scala}</span><span class="pill">${m.tipo}</span></div>
+        ${m.mood ? `<div class="mood">${m.mood}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
 
-        dropZone.onclick = () => photoInput.click();
+async function rgal() {
+  const d = M.filter(m => m.status === 'done').sort((a, b) => (b.anno||0) - (a.anno||0));
+  const sec = document.getElementById('galSec');
+  if (!d.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  document.getElementById('gal').innerHTML = d.map(m => {
+    const k = m.name + '|' + m.scala;
+    const p = photoCache[k];
+    return `<div class="comic-border bg-white p-2 aspect-square relative overflow-hidden flex items-center justify-center">
+      ${p ? `<img src="${p}" class="w-full h-full object-cover filter grayscale">` : `<div class="text-center font-black p-4 text-xs italic uppercase">${m.name}</div>`}
+      <div class="absolute bottom-1 right-1 stamp-badge bg-white text-[8px] scale-75">DONE</div>
+    </div>`;
+  }).join('');
+}
 
-        photoInput.onchange = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('previewImg').src = event.target.result;
-                    document.getElementById('photoPreview').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        };
+function tgc(k) { EK = EK === k ? null : k; rg(); }
+function toggleSort() { SM = SM === 'status' ? 'anno' : 'status'; document.getElementById('sortBtn').textContent = SM === 'status' ? '↕ ANNO' : '↕ STATO'; rg(); }
 
-        function savePhoto() {
-            const base64 = document.getElementById('previewImg').src;
-            if (currentEditingId && base64) {
-                localStorage.setItem(`photo_${currentEditingId}`, base64);
-                renderKits(allKits); // Refresh grid
-                closePhotoModal();
-            }
-        }
+function copyPrompt() {
+  const doing = M.filter(m => m.status === 'wip').map(m => m.name).join(', ');
+  const done = M.filter(m => m.status === 'done').map(m => m.name).join(', ');
+  const av = M.filter(m => !['done','wip'].includes(m.status)).map(m => `- ${m.name} | ${m.anno} | ${m.scala}`).join('\n');
+  const pr = `AI Suggerimento: Prossimi 5 modelli.\nCOSTRUZIONE: ${doing}\nFINITI: ${done}\nDISPONIBILI:\n${av}`;
+  navigator.clipboard.writeText(pr).then(() => {
+    const el = document.getElementById('pc');
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 5000);
+  });
+}
 
-        // INIT
-        window.onload = fetchKits;
-    </script>
+document.querySelectorAll('.fg').forEach(g => {
+  const fn = g.dataset.f;
+  g.querySelectorAll('.fb').forEach(b => {
+    b.addEventListener('click', () => {
+      F[fn] = b.dataset.v;
+      g.querySelectorAll('.fb').forEach(x => x.classList.remove('a'));
+      b.classList.add('a'); EK = null; rg();
+    });
+  });
+});
+document.getElementById('si').addEventListener('input', e => { S = e.target.value.toLowerCase(); EK = null; rg(); });
+
+(async () => {
+  loadPhotos();
+  let d = await load(CSV_URL);
+  M = d || [];
+  rs(); rtl(); rg(); rgal();
+})();
+</script>
 </body></html>
