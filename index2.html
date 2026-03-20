@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html class="light" lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LA COLLEZIONE - Comic Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'headline': ['Space Grotesk', 'sans-serif'],
+                        'body': ['Work Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'ink': '#000000',
+                        'paper': '#ffffff',
+                        'panel': '#f3f3f3',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3, .comic-text { font-family: 'Space Grotesk', sans-serif; }
+        
+        .halftone {
+            background-image: radial-gradient(circle, #000 1px, transparent 1px);
+            background-size: 4px 4px;
+            opacity: 0.15;
+        }
+        
+        .halftone-heavy {
+            background-image: radial-gradient(circle, #000 2px, transparent 2px);
+            background-size: 6px 6px;
+            opacity: 0.3;
+        }
+
+        .ink-border { border: 4px solid black; }
+        .ink-border-thin { border: 2px solid black; }
+        
+        .ink-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+        }
+        
+        .ink-shadow-sm {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+
+        .comic-panel {
+            background: white;
+            position: relative;
+            transition: transform 0.1s ease;
+        }
+        
+        .comic-panel:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px 0px rgba(0,0,0,1);
+        }
+
+        .status-badge {
+            @apply font-black italic uppercase text-[10px] px-2 py-0.5 ink-border-thin bg-white;
+        }
+
+        .filter-btn {
+            @apply px-4 py-2 font-black italic uppercase text-xs transition-colors ink-border-thin hover:bg-black hover:text-white;
+        }
+        
+        .filter-btn.active {
+            @apply bg-black text-white;
+        }
+
+        .speed-lines {
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 0, 0, 0.05) 10px,
+                rgba(0, 0, 0, 0.05) 11px
+            );
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .loader-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+    </style>
+</head>
+<body class="bg-[#f0f0f0] text-ink min-h-screen pb-20">
+<!-- Header / Hero Section -->
+<header class="bg-white ink-border-b pt-12 pb-8 px-6 relative overflow-hidden border-b-8 border-black">
+<div class="halftone absolute inset-0 pointer-events-none"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-end gap-6">
+<div class="relative">
+<h1 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase leading-none">
+                        LA <br/> COLLEZIONE
+                    </h1>
+<div class="absolute -bottom-2 left-0 w-full h-4 bg-black -rotate-1"></div>
+</div>
+<!-- Stats "Timbri" -->
+<div class="flex flex-wrap gap-4" id="stats-container">
+<div class="ink-border p-3 bg-white ink-shadow-sm rotate-1">
+<span class="block text-[10px] font-bold uppercase tracking-widest border-b-2 border-black mb-1">COMPLETATI</span>
+<span class="text-3xl font-black italic" id="stat-done">--</span>
+</div>
+<div class="ink-border p-3 bg-black text-white ink-shadow-sm -rotate-2">
+<span class="block text-[10px] font-bold uppercase tracking-widest border-b border-white/30 mb-1">IN CORSO</span>
+<span class="text-3xl font-black italic" id="stat-doing">--</span>
+</div>
+<div class="ink-border p-3 bg-white ink-shadow-sm rotate-2">
+<span class="block text-[10px] font-bold uppercase tracking-widest border-b-2 border-black mb-1">STUDIO</span>
+<span class="text-3xl font-black italic" id="stat-studying">--</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Toolbar: Search & Filters -->
+<div class="sticky top-0 z-40 bg-white border-b-4 border-black ink-shadow">
+<div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row gap-4 items-center">
+<!-- Search -->
+<div class="relative flex-grow w-full md:w-auto">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-black">search</span>
+<input class="w-full pl-10 pr-4 py-2 ink-border bg-white font-bold uppercase text-sm focus:ring-0 focus:border-black placeholder-gray-400" id="searchInput" placeholder="CERCA MODELLO O MARCA..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-2 justify-center">
+<div class="flex ink-border bg-white p-1">
+<button class="filter-btn active px-3" data-filter-status="all" onclick="filterByStatus('all')">TUTTI</button>
+<button class="filter-btn px-3" data-filter-status="Done" onclick="filterByStatus('Done')">DONE</button>
+<button class="filter-btn px-3" data-filter-status="Doing" onclick="filterByStatus('Doing')">DOING</button>
+<button class="filter-btn px-3" data-filter-status="Studying" onclick="filterByStatus('Studying')">STUDY</button>
+</div>
+<select class="ink-border-thin bg-white font-bold uppercase text-xs px-2 py-2 focus:ring-0" id="typeFilter" onchange="applyFilters()">
+<option value="all">OGNI CATEGORIA</option>
+<option value="F1">F1</option>
+<option value="GT">GT/PROTOTIPI</option>
+<option value="ROAD">STRADALI</option>
+<option value="CLASSIC">CLASSIC</option>
+</select>
+<button class="ink-border-thin p-2 hover:bg-black hover:text-white" id="viewToggle" onclick="toggleView('grid')">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 py-12">
+<!-- Loading State -->
+<div class="flex flex-col items-center justify-center py-20" id="loader">
+<div class="ink-border p-8 bg-white ink-shadow relative">
+<div class="halftone absolute inset-0"></div>
+<h2 class="text-4xl font-black italic uppercase relative z-10">CARICAMENTO ARCHIVIO<span class="loader-dots"></span></h2>
+</div>
+</div>
+<!-- Empty State -->
+<div class="hidden text-center py-20" id="empty-state">
+<div class="ink-border p-12 bg-white inline-block ink-shadow">
+<span class="material-symbols-outlined text-6xl mb-4">search_off</span>
+<h3 class="text-2xl font-black italic uppercase">NESSUN MODELLO TROVATO</h3>
+<p class="mt-2 text-sm">Modifica i filtri o la ricerca per esplorare l'archivio.</p>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="modelGrid">
+<!-- Cards will be injected here -->
+</div>
+<!-- Section: Technical Appendix (History/Timeline) - Comic Style -->
+<section class="mt-24 border-t-8 border-black pt-12">
+<div class="flex items-center gap-4 mb-8">
+<h2 class="text-4xl font-black italic uppercase tracking-tighter">APPENDICE TECNICA</h2>
+<div class="flex-grow h-1 bg-black"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="ink-border p-6 bg-white ink-shadow speed-lines">
+<h4 class="font-black border-b-2 border-black pb-2 mb-4 italic uppercase">CRONOLOGIA ACQUISTI</h4>
+<ul class="space-y-4 text-xs font-medium" id="mini-timeline">
+<!-- History items -->
+<li class="flex gap-3 items-start">
+<span class="bg-black text-white px-2 font-bold">70s</span>
+<p>L'epoca d'oro delle forme audaci e del motorsport analogico.</p>
+</li>
+</ul>
+</div>
+<div class="md:col-span-2 ink-border bg-white overflow-hidden relative">
+<div class="halftone-heavy absolute inset-0 pointer-events-none opacity-10"></div>
+<div class="p-4 border-b-2 border-black flex justify-between items-center bg-zinc-100">
+<span class="font-black italic uppercase text-sm">GALLERIA RECENTI</span>
+<span class="text-[10px] font-bold">MANUAL_REF_004</span>
+</div>
+<div class="flex overflow-x-auto p-4 gap-4 no-scrollbar" id="mini-gallery">
+<!-- Tiny thumbs will go here -->
+<div class="flex-shrink-0 w-32 h-32 ink-border bg-zinc-200 halftone"></div>
+<div class="flex-shrink-0 w-32 h-32 ink-border bg-zinc-200 halftone"></div>
+<div class="flex-shrink-0 w-32 h-32 ink-border bg-zinc-200 halftone"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB / Footer Nav -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-white border-t-4 border-ink">
+<a class="flex flex-col items-center justify-center text-ink w-full h-full hover:bg-zinc-100 border-r-2 border-ink" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="comic-text font-black uppercase text-[10px]">HOME</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-black text-white w-full h-full" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="comic-text font-black uppercase text-[10px]">COLLEZIONE</span>
+</a>
+<button class="flex flex-col items-center justify-center text-ink w-full h-full hover:bg-zinc-100 border-l-2 border-ink" onclick="alert('Funzionalità aggiunta in fase di sviluppo')">
+<span class="material-symbols-outlined">add_box</span>
+<span class="comic-text font-black uppercase text-[10px]">NUOVO</span>
+</button>
+</nav>
+<!-- Model Detail Modal (Hidden by default) -->
+<div class="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4 hidden" id="detailModal">
+<div class="bg-white ink-border ink-shadow max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+<button class="absolute top-4 right-4 bg-black text-white p-1 ink-border z-10" onclick="closeModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div id="modalContent"></div>
+</div>
+</div>
+<script>
+        // CONFIGURATION
+        const SHEET_ID = '1KueO4RzBqK_m66r7-k5YjL7XJcR-3pY9V8n-H3pA6-Y'; // Example ID
+        const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+        
+        // APP STATE
+        let allModels = [];
+        let currentStatusFilter = 'all';
+        let viewMode = 'grid';
+
+        // 1. DATA LOADING
+        async function loadData() {
+            try {
+                // In a real scenario, we'd fetch from SHEET_CSV_URL. 
+                // For this demo, we use a robust set of fallback/mock data based on the user's collection.
+                const response = await fetch(SHEET_CSV_URL);
+                const text = await response.text();
+                allModels = parseCSV(text);
+                if (allModels.length === 0) throw new Error("Empty data");
+            } catch (err) {
+                console.warn("Using mock data as backup");
+                allModels = [
+                    { id: '1', name: 'Tyrrell 003', brand: 'Tamiya', scale: '1:12', year: '1971', status: 'Studying', type: 'F1', notes: 'Jackie Stewart car.' },
+                    { id: '2', name: 'Ferrari 312PB', brand: 'MFH', scale: '1:24', year: '1972', status: 'Doing', type: 'GT', notes: 'Detailed engine block.' },
+                    { id: '3', name: 'Lancia Stratos', brand: 'Hasegawa', scale: '1:24', year: '1974', status: 'Done', type: 'GT', notes: 'Alitalia livery.' },
+                    { id: '4', name: 'Porsche 917K', brand: 'Fujimi', scale: '1:24', year: '1970', status: 'Done', type: 'GT', notes: 'Gulf livery.' },
+                    { id: '5', name: 'Lotus 72D', brand: 'Ebbro', scale: '1:20', year: '1972', status: 'Studying', type: 'F1', notes: 'JPS Black & Gold.' },
+                    { id: '6', name: 'Alfa 33/3', brand: 'MFH', scale: '1:24', year: '1971', status: 'Doing', type: 'GT', notes: 'Targa Florio winner.' }
+                ];
+            }
+            
+            initDashboard();
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const result = [];
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i]) continue;
+                const obj = {};
+                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                headers.forEach((h, index) => {
+                    obj[h.toLowerCase()] = currentline[index]?.trim().replace(/"/g, '') || '';
+                });
+                result.push(obj);
+            }
+            return result;
+        }
+
+        // 2. RENDERING
+        function initDashboard() {
+            document.getElementById('loader').classList.add('hidden');
+            updateStats();
+            applyFilters();
+            renderTimeline();
+        }
+
+        function updateStats() {
+            const done = allModels.filter(m => m.status === 'Done').length;
+            const doing = allModels.filter(m => m.status === 'Doing').length;
+            const study = allModels.filter(m => m.status === 'Studying').length;
+            
+            document.getElementById('stat-done').textContent = done.toString().padStart(2, '0');
+            document.getElementById('stat-doing').textContent = doing.toString().padStart(2, '0');
+            document.getElementById('stat-studying').textContent = study.toString().padStart(2, '0');
+        }
+
+        function renderGrid(models) {
+            const container = document.getElementById('modelGrid');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (models.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            container.innerHTML = models.map(model => createCard(model)).join('');
+        }
+
+        function createCard(model) {
+            // Check localStorage for photos
+            const userPhoto = localStorage.getItem(`photo_${model.id}`);
+            const imgHtml = userPhoto 
+                ? `<img src="${userPhoto}" class="w-full h-full object-cover grayscale contrast-125">`
+                : `<div class="w-full h-full halftone-heavy flex items-center justify-center bg-zinc-200">
+                    <span class="material-symbols-outlined text-4xl opacity-50">image</span>
+                   </div>`;
+
+            const statusClass = model.status === 'Doing' ? 'bg-black text-white' : 'bg-white text-ink';
+
+            return `
+                <div class="comic-panel ink-border bg-white group cursor-pointer" onclick="openModel('${model.id}')">
+                    <div class="relative h-56 border-b-4 border-black overflow-hidden bg-black">
+                        <div class="absolute inset-0 halftone opacity-30 pointer-events-none z-10"></div>
+                        ${imgHtml}
+                        <div class="absolute top-3 right-3 ${statusClass} px-3 py-1 ink-border-thin font-black italic text-[10px] tracking-tighter uppercase z-20">
+                            ${model.status}
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-2xl font-black italic uppercase leading-none tracking-tighter w-2/3">${model.name}</h3>
+                            <div class="ink-border-thin px-2 py-0.5 bg-zinc-100 font-bold text-[10px]">
+                                ${model.scale} | ${model.year}
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-end pt-3 border-t-2 border-black border-dashed">
+                            <div>
+                                <p class="text-[9px] font-black uppercase text-gray-500">MANUFACTURER</p>
+                                <p class="font-bold uppercase tracking-tighter text-sm">${model.brand}</p>
+                            </div>
+                            <button class="bg-black text-white p-1.5 hover:translate-x-1 transition-transform">
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. LOGIC & FILTERS
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            document.querySelectorAll('[data-filter-status]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-filter-status') === status);
+            });
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const type = document.getElementById('typeFilter').value;
+            
+            const filtered = allModels.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(search) || m.brand.toLowerCase().includes(search);
+                const matchesStatus = currentStatusFilter === 'all' || m.status === currentStatusFilter;
+                const matchesType = type === 'all' || m.type === type;
+                return matchesSearch && matchesStatus && matchesType;
+            });
+            
+            renderGrid(filtered);
+        }
+
+        // Live Search event
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // 4. MODAL & DETAILS
+        function openModel(id) {
+            const model = allModels.find(m => m.id === id);
+            if (!model) return;
+            
+            const userPhoto = localStorage.getItem(`photo_${model.id}`);
+            
+            const content = `
+                <div class="p-0">
+                    <div class="relative h-80 bg-black ink-border-b border-b-4 border-black">
+                         ${userPhoto 
+                            ? `<img src="${userPhoto}" class="w-full h-full object-cover grayscale contrast-125">`
+                            : `<div class="w-full h-full halftone-heavy flex items-center justify-center bg-zinc-200"><span class="material-symbols-outlined text-6xl opacity-20">directions_car</span></div>`
+                         }
+                         <div class="absolute bottom-4 left-4 bg-white ink-border-thin px-4 py-2 ink-shadow-sm">
+                            <h2 class="text-3xl font-black italic uppercase tracking-tighter">${model.name}</h2>
+                         </div>
+                    </div>
+                    
+                    <div class="p-8 halftone relative">
+                        <div class="grid grid-cols-2 gap-8 mb-8">
+                            <div class="ink-border p-4 bg-white">
+                                <p class="text-[10px] font-black uppercase opacity-60 mb-2">SCHEDA TECNICA</p>
+                                <ul class="space-y-1 text-sm font-bold uppercase">
+                                    <li class="flex justify-between border-b border-black/10"><span>MARCA:</span> <span>${model.brand}</span></li>
+                                    <li class="flex justify-between border-b border-black/10"><span>SCALA:</span> <span>${model.scale}</span></li>
+                                    <li class="flex justify-between border-b border-black/10"><span>ANNO:</span> <span>${model.year}</span></li>
+                                    <li class="flex justify-between"><span>TIPO:</span> <span>${model.type}</span></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <button onclick="handlePhotoUpload('${model.id}')" class="w-full ink-border bg-black text-white py-3 font-black italic uppercase text-xs flex items-center justify-center gap-2 hover:bg-zinc-800">
+                                    <span class="material-symbols-outlined text-sm">photo_camera</span> AGGIORNA FOTO
+                                </button>
+                                <button onclick="copyClaudePrompt('${model.id}')" class="w-full ink-border bg-white text-ink py-3 font-black italic uppercase text-xs flex items-center justify-center gap-2 hover:bg-zinc-100">
+                                    <span class="material-symbols-outlined text-sm">content_copy</span> PROMPT PER CLAUDE
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ink-border p-6 bg-white relative speed-lines">
+                            <div class="absolute -top-3 left-4 bg-black text-white px-2 py-0.5 text-[10px] font-bold">LOG OFFICINA</div>
+                            <p class="text-sm italic leading-relaxed text-zinc-700">${model.notes || 'Nessuna nota aggiuntiva per questo modello in archivio.'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // 5. UTILITIES
+        function handlePhotoUpload(id) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = () => {
+                    localStorage.setItem(`photo_${id}`, reader.result);
+                    alert('Foto salvata correttamente nell\'archivio locale.');
+                    applyFilters();
+                    closeModal();
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
+
+        function copyClaudePrompt(id) {
+            const model = allModels.find(m => m.id === id);
+            const prompt = `Ciao Claude, sto lavorando al modello ${model.name} (${model.brand}, ${model.scale}). È un kit del ${model.year} e attualmente lo stato è "${model.status}". Potresti analizzare storicamente questo veicolo e suggerirmi riferimenti per il weathering o dettagli tecnici da aggiungere per renderlo fedele all'originale?`;
+            
+            navigator.clipboard.writeText(prompt).then(() => {
+                alert('Prompt copiato negli appunti per Claude!');
+            });
+        }
+
+        function renderTimeline() {
+            const history = allModels.slice(0, 5);
+            const timeline = document.getElementById('mini-timeline');
+            timeline.innerHTML = history.map(m => `
+                <li class="flex gap-3 items-start border-b border-black/10 pb-2">
+                    <span class="font-black italic">${m.year}</span>
+                    <p class="uppercase font-bold text-[10px]">${m.name}</p>
+                </li>
+            `).join('');
+
+            const gallery = document.getElementById('mini-gallery');
+            gallery.innerHTML = history.map(m => {
+                const pic = localStorage.getItem(`photo_${m.id}`);
+                return `
+                    <div class="flex-shrink-0 w-24 h-24 ink-border-thin bg-white overflow-hidden relative">
+                        <div class="halftone absolute inset-0 opacity-20"></div>
+                        ${pic ? `<img src="${pic}" class="w-full h-full object-cover grayscale">` : `<div class="w-full h-full flex items-center justify-center opacity-20"><span class="material-symbols-outlined">directions_car</span></div>`}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // INITIALIZE
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body></html>
